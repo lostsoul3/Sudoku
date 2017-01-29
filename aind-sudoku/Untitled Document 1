@@ -1,0 +1,114 @@
+assignments = []
+
+def assign_value(values, box, value):
+    """
+    Please use this function to update your values dictionary!
+    Assigns a value to a given box. If it updates the board record it.
+    """
+    values[box] = value
+    if len(value) == 1:
+        assignments.append(values.copy())
+    return values
+
+def naked_twins(values):
+    """Eliminate values using the naked twins strategy.
+    Args:
+        values(dict): a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns:
+        the values dictionary with the naked twins eliminated from peers.
+    """
+
+    # Find all instances of naked twins
+    # Eliminate the naked twins as possibilities for their peers
+    for unit in unitlist:
+    temp=[]
+    bb2 = [values[b] for b in unit if len(values[b])==2]
+    bb1 = [b for b in unit if len(values[b])==2]
+    twins = [v for v,n in collections.Counter(bb2).items() if n==2]
+    if len(twins)!=0:
+        for t in twins:
+            for i in bb1:
+                if values[i]==t:
+                    if values[i]==t:
+                        temp.append(i)
+            a = temp[0]
+            b = temp[1]
+            if a[0]==b[0]:
+                unit_type = units[a]
+                for i in unit_type[0]:
+                    if i!=a and i!=b:
+                        for digit in t:
+                            values[i]=values[i].replace(digit,'')
+            if a[1]==b[1]:
+                unit_type = units[a]
+                for i in unit_type[1]:
+                    if i!=a and i!=b:
+                        for digit in t:
+                            values[i]=values[i].replace(digit,'')
+            if a[0]!=b[0] and a[1]!=b[1]:
+                unit_type = units[a]
+                for i in unit_type[2]:
+                    if i!=a and i!=b:
+                        for digit in t:
+                            values[i]=values[i].replace(digit,'')
+    return values            
+
+def cross(A, B):
+    "Cross product of elements in A and elements in B."
+    return [s+t for s in A for t in B]
+
+def grid_values(grid):
+    """
+    Convert grid into a dict of {square: char} with '123456789' for empties.
+    Args:
+        grid(string) - A grid in string form.
+    Returns:
+        A grid in dictionary form
+            Keys: The boxes, e.g., 'A1'
+            Values: The value in each box, e.g., '8'. If the box has no value, then the value will be '123456789'.
+    """
+    return dict(zip(boxes,grid))
+
+def display(values):
+    """
+    Display the values as a 2-D grid.
+    Args:
+        values(dict): The sudoku in dictionary form
+    """
+    pass
+
+def eliminate(values):
+    pass
+
+def only_choice(values):
+    pass
+
+def reduce_puzzle(values):
+    pass
+
+def search(values):
+    pass
+
+def solve(grid):
+    """
+    Find the solution to a Sudoku grid.
+    Args:
+        grid(string): a string representing a sudoku grid.
+            Example: '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    Returns:
+        The dictionary representation of the final sudoku grid. False if no solution exists.
+    """
+
+if __name__ == '__main__':
+    diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+    display(solve(diag_sudoku_grid))
+
+    try:
+        from visualize import visualize_assignments
+        visualize_assignments(assignments)
+
+    except SystemExit:
+        pass
+    except:
+        print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')
